@@ -1,0 +1,268 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %} 
+{% include 'partials/_busca.html' %} 
+{% include 'partials/_menu.html' %}
+
+<!-- ##### Contact Form Area Start ##### -->
+<div class="contact-area section-padding-0">
+    <div class="container">
+      <div class="row">
+        {% if itens %}
+        <div class="col-12">
+          <div class="alert alert-dark text-dark border border-dark" role="alert">
+            <h4 class="text-center">
+              Prezado, {{ user.first_name }} {{ user.last_name }}!
+            </h4>
+  
+            <h4 class="alert-heading">
+              Visualize seu pedido, com o valor total de sua compra, e confirme a forma de pagamento no site da Golden Bear Company. <i class="fa fa-registered" aria-hidden="true"></i>
+            </h4>
+  
+            <p style="color: black;">
+              A sua loja digital, personalizada da GOLDEN BEAR COMPANY, onde você
+              encontrará camisas, calças, blusas, acessórios, bonés e chaveiros,
+              fique a vontade para entrar em contato conosco!
+            </p>
+  
+            <hr />
+  
+            <p class="mb-0" style="color: black;">
+              Abaixo a tabela com o número do seu pedido e o valor total de sua compra. Também abaixo você pode escolher a forma de pagamento do sue pedido.
+            </p>
+          </div>
+  
+          {% include 'partials/_alertas.html' %} 
+  
+          
+          <div class="contact-form-area">
+              <div class="row">
+                <div class="carrinho col-12">
+                  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+                  <h1 class="text-center">Carrinho de compras</h1>
+                  <table class="table table-striped table-dark table-bordered table-hover 
+                  table-responsive-xl border border-dark text-center">
+                    <thead class="table thead-dark table-responsive-xl">
+                      <tr class="produto">
+                        <th scope="col">Número do pedido</th>
+                        <th scope="col">Nome<br> do produto</th>
+                        <th scope="col">Descrição<br> do produto</th>
+                        <th scope="col">Quantidade unitária</th>
+                        <th scope="col">Valor unitário</th>
+                        <th scope="col">SubTotal do valor</th>
+                        <th scope="col">Remover produto</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for itemPedido in itens %}
+                      <tr>
+                        <th scope="row">#{{ itemPedido.pedido.id }}</th>
+                        <td>{{ itemPedido.produto.nome_produto }}</td>
+                        <td>{{ itemPedido.produto.descricao }}</td>
+                        <td class="qtd_item">{{ itemPedido.quantidade }}</td>
+                        <td>{{ itemPedido.produto.preco }}</td>
+                        <td class="item-total">{{ itemPedido.produto.preco }} + ",00"</td>
+                        <td>
+                          <form method="POST" action="{% url 'removerProdutoConfirmarCompra' %}">
+                            {% csrf_token %}
+                            <button
+                            class="text text-white btn btn-outline-dark btn-link"
+                            type="submit"
+                            >Remover <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                            <input type="hidden" name="produto" value="{{ itemPedido.id }}" />
+                          </form>
+                        </td>
+                      </tr>
+                      {% endfor %} 
+                    </tbody>
+                  </table>
+
+                  
+                  <h1 class="text-center">Confirmação do valor total e quantidade de produto</h1>
+                  <table class="table table-striped table-dark table-bordered table-hover 
+                  table-responsive-xl border border-dark text-center">                    
+                    <tbody>
+                      {% if itens %}
+                      <ul class="list-group rounded">
+                        <li class="list-group-item d-flex justify-content-between align-items-center border border-dark">
+                          <strong class="text-uppercase">Valor total do seu pedido:</strong>
+                          <h5><span class="badge badge-primary "><strong>R$ </strong><span class="valorTotal">0</span></span></h5>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border border-dark">
+                          <strong class="text-uppercase">Quantidade de produtos no seu pedido:</strong>
+                          <h5><span class="badge badge-primary"><strong>Produtos: </strong><span class="qtdProdutos">0</span></span></h5>
+                        </li>
+                      </ul><br>
+                      {% endif %}
+                    </tbody>
+                  </table>
+
+                  <!-- Declaração do formulário -->  
+                  <form method="post" target="pagseguro"  
+                  action="https://pagseguro.uol.com.br/v2/checkout/payment.html">  
+                            
+                    <!-- Campos obrigatórios -->  
+                    <input name="receiverEmail" type="hidden" value="suporte@lojamodelo.com.br">  
+                    <input name="currency" type="hidden" value="BRL">  
+
+
+
+ 
+                    <script>
+                       var item ={itemId = "", itemDescription = "",itemAmount = "", itemQuantity = "", itemWeight = ""}
+                        var listItems = function(){
+                          var itens = $('.carrinho');;
+                          itens.each(function(){
+                            var itemAtual = $(this);
+                            item = new item;
+                            item.itemId =itemAtual.pedido.id;
+                            item.itemDescription = itemAtual.produto.nome_produto;
+                            item.itemAmount = parseFloat(itemAtual.produto.preco);
+                            item.itemQuantity = itemAtual.quantidade;
+                            item.itemWeight = 1000
+                          })
+                        };
+
+                    </script>
+
+                      {% for itemPedido in itens %}
+                      <!-- Itens do pagamento (ao menos um item é obrigatório) -->  
+                        <input name="itemId1" type="hidden" value="{{ itemPedido.pedido.id }}">  
+                        <input name="itemDescription1" type="hidden" value="{{ itemPedido.produto.nome_produto }}">  
+                        <input name="itemAmount1" type="hidden" value +="{{ itemPedido.pedido.valor}}">  
+                        <input name="itemQuantity1" type="hidden" value="{{ itemPedido.quantidade }}">   
+                        <input name="itemWeight1" type="hidden" value="1000">  
+                      {% endfor %}
+
+
+                    <!-- Código de referência do pagamento no seu sistema (opcional) -->  
+                    <input name="reference" type="hidden" value="REF1234">  
+                      
+                    <!-- Informações de frete (opcionais) -->  
+                    <input name="shippingType" type="hidden" value="1">  
+                    <input name="shippingAddressPostalCode" type="hidden" value="04459010">  
+                    <input name="shippingAddressStreet" type="hidden" value="{{ UserProfile.address }}">  
+                    <input name="shippingAddressNumber" type="hidden" value="41">  
+                    <input name="shippingAddressComplement" type="hidden" value="{{ UserProfile.address }}">  
+                    <input name="shippingAddressDistrict" type="hidden" value="Jardim Paulistano">  
+                    <input name="shippingAddressCity" type="hidden" value="{{ UserProfile.city }}">  
+                    <input name="shippingAddressState" type="hidden" value="{{ UserProfile.country }}">  
+                    <input name="shippingAddressCountry" type="hidden" value="BRA">  
+              
+                    <!-- Dados do comprador (opcionais) -->  
+                    <input name="senderName" type="hidden" value="{{ user.first_name }}">  
+                    <input name="senderAreaCode" type="hidden" value="{{ UserProfile.phone }}">  
+                    <input name="senderPhone" type="hidden" value="{{ UserProfile.phone }}">  
+                    <input name="senderEmail" type="hidden" value="{{ user.email }}">  
+              
+                    <!-- submit do form (obrigatório) -->  
+
+                      <button class="btn btn-outline-dark btn-block border border-dark" 
+                      type="submit">
+                      Pagar com pagseguro
+                      </button>
+                            
+                  </form>  <br>
+                </div>
+
+                <div class="col-12 text-center">
+                    <button
+                      class="btn btn-outline-dark btn-block border border-dark"
+                      type="submit"
+                      onclick="exibirTelaBoletoBradesco()">pagamento no próprio sistema
+                    </button>
+
+
+                    <button
+                      class="btn btn-outline-dark btn-block border border-dark"
+                      type="submit"
+                      onclick="exibirTelaPagamentoCartao()">pagamento com cartão de crédito ou Paypal
+                    </button>
+                </div>
+
+            {% else %}
+              <div class="alert alert-danger text-dark border border-dark" role="alert">
+                <h4 class="alert-heading text-center">
+                  Prezado(a), {{ user.first_name }} {{ user.last_name }}!
+                </h4>
+                <br>
+  
+                <h4 class="alert-heading text-center">
+                  No momento você não possui nenhum produto adicionado ao seu carrinho
+                </h4>
+      
+                <p style="color: black;">
+                  A sua loja digital, personalizada da GOLDEN BEAR COMPANY, onde você
+                  encontrará camisas, calças, blusas, acessórios, bonés e chaveiros,
+                  fique a vontade para entrar em contato conosco!
+                </p>
+      
+                <hr />
+      
+                <p class="mb-0" style="color: black;">
+                  Para facilitar sua navegação dentro do site, você pode clicar no link abaixo e ir para o menu principal, selecionar 
+                  uma categoria e adicionar um produto ao seu carrinho.<br>
+                </p>
+                <a href="{% url 'index' %}" class="btn btn-block btn-link">
+                  <button
+                    class="btn btn-outline-dark btn-link"
+                    type="submit">Clique aqui! Para ir ao menu principal
+                  </button>
+                </a>
+               
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+
+function exibirTelaBoletoBradesco() {
+  location.href = "{% url 'boletoBradesco' %}";
+}
+
+function exibirTelaPagamentoCartao() {
+  location.href = "{% url 'pagamentoCartao' %}";
+}
+
+function criarFormPagSeguro(){
+ 
+}
+
+
+
+var atualizaCarrinho = function(){
+    var carrinhos = $('.carrinho');
+    carrinhos.each(function(){
+        var carrinhoAtual = $(this);
+        var valorItem = carrinhoAtual.find('.item-total:visible');
+        var valorTotal = carrinhoAtual.find('.valorTotal');
+        var qtdTotal = carrinhoAtual.find('.qtdProdutos');
+        var item_total = $('.item-total' + ",00");
+        var qtdItems = $('.qtd_item' + ",00");
+        var vt= 0;
+        var resultado = 0.0;
+        for(var i = 0; i < qtdItems.length; i++){
+            var qtdItem = parseFloat(qtdItems[i].innerHTML);
+            var vtItem = qtdItem * parseFloat(item_total[i].innerHTML + ",00");
+            item_total[i].innerHTML = vtItem + ",00";
+            resultado += vtItem;
+            vt += qtdItem ;
+        }   
+                
+        valorTotal.text(resultado + ",00");
+        qtdTotal.text(vt);
+    });
+};
+atualizaCarrinho();
+</script>
+,
+
+{% include 'partials/_footer.html' %}
+{% endblock %}

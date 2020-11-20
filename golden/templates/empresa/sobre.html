@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'partials/_menu.html' %}
+
+<!-- Receipe Content Area -->
+<div class="receipe-content-area">
+    <div class="container">
+        <div class="row">
+
+            <div class="alert alert-dark text-dark" role="alert">
+                <h2 class="text-left">Informações sobre a empresa GOLDEN BEAR COMPANY 
+                    <i class="fa fa-registered" aria-hidden="true"></i></h2><br>
+                <p style="color:black">A sua loja digital, personalizada da GOLDEN BEAR COMPANY, onde você encontrará camisas, 
+                    calças, blusas, acessórios, bonés e chaveiros, fique a vontade para entrar em contato conosco! 
+                </p>
+
+                <hr>
+
+                <h4>Sobre nós </h4>
+                <p align="justify" style="color:black">Lorem Ipsum is simply dummy text of the printing and 
+                    typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                    when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+                    It has survived not only five centuries, but also the leap into electronic typesetting, 
+                    remaining essentially unchanged. It was popularised in the 1960s with the release of 
+                    Letraset sheets containing Lorem Ipsum passages, and more recently with desktop 
+                    publishing software like Aldus PageMaker including versions of Lorem Ipsum. 
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                    when an unknown printer took a galley of type and scrambled it to make a type 
+                    specimen book. It has survived not only five centuries, but also the leap into 
+                    electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the 
+                    release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing 
+                    software like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
+
+                <hr>
+
+                <h4>Nossos produtos </h4>
+                <p align="justify" style="color:black">Lorem Ipsum is simply dummy text of the printing and typesetting 
+                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown 
+                    printer took a galley of type and scrambled it to make a type specimen book. It has survived not only 
+                    five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                </p>
+                <hr/>
+
+                <h4>Informações sobre a política de privacidade e termos de uso </h4>
+                <p align="justify" style="color:black">A sua privacidade é importante para nós. 
+                    É política do Golden Bear Company respeitar a sua privacidade em relação a qualquer informação sua que possamos 
+                    coletar no site Golden Bear Company, e outros sites que possuímos e operamos. Para saber mais, clique no link abaixo.
+                </p>
+                
+                <p class="m-auto p-2 text-center">
+                    <a href="{% url 'politicaDeDevolucao' %}"> 
+                        <button class="alert-link btn btn-link" type="submit">
+                            Confira a política de troca, devolução e arrependimentos
+                        </button>
+                    </a><br>
+                    <a href="{% url 'termosDeCompra' %}"> 
+                      <button class="alert-link btn btn-link" type="submit">
+                          Confira os termos e condições de compra
+                      </button>
+                    </a>
+        
+                    <a href="{% url 'politicaDeReembolso' %}"> 
+                        <button class="alert-link btn btn-link" type="submit">
+                            Confira a política de reembolso
+                        </button>
+                    </a>
+
+                    <a href="{% url 'politicaDePrivacidade' %}"> 
+                        <button class="alert-link btn btn-link" type="submit">
+                            Conferir a política de privacidade
+                        </button>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'partials/_footer.html' %}
+{% endblock %}

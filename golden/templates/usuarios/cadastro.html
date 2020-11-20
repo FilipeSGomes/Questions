@@ -1,0 +1,275 @@
+{% extends 'base.html' %} 
+{% load static %} {% block content %} 
+
+{% include 'partials/_busca.html' %} 
+{% include 'partials/_menu.html' %}
+
+<!-- ##### Contact Form Area Start ##### -->
+<div class="contact-area section-padding-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+
+        <div class="alert alert-dark text-dark text-center border border-dark" role="alert">
+          <h4 class="text-center">
+            Crie sua conta no site da GOLDEN BEAR COMPANY
+            <i class="fa fa-registered" aria-hidden="true"></i>
+          </h4>
+          <p style="color: black;">
+            A sua loja digital e personalizada da GOLDEN BEAR COMPANY. Aqui você
+            encontrará camisas, calças, blusas, acessórios, bonés e chaveiros.
+            Fique à vontade para entrar em contato conosco!
+          </p>
+          <hr />
+          <p class="mb-0" style="color: black;">
+            Todos os dados a seguir serão obrigatórios para realizar o cadastro
+            no site da GOLDEN BEAR COMPANY
+            <i class="fa fa-paw" aria-hidden="true"></i>
+          </p>
+        </div>
+
+        {% include 'partials/_alertas.html' %}
+        <div class="contact-form-area">
+          <form class="ls-form ls-form-horizontal" action="{% url 'cadastro' %}" method="POST" data-toggle="validator" role="form">
+            {% csrf_token %}
+
+            <div class="row form-group">
+
+              <div class="col-12 col-lg-12 ls-prefix-group">
+                <label for="username">
+                  <b>Usuário <i class="fa fa-user-plus" aria-hidden="true"></i></b>
+                </label>
+                <input
+                  type="text"
+                  class="form-control border border-dark rounded contador caracteres"
+                  name="username"
+                  id="username"
+                  placeholder="Digite um nome de usuário..."
+                  title="Seu usuário é orbigatório para o preenchimento do formulário, e ele deve conter entre cinco (5) e trinta (30) caracteres."
+                  maxlength="30"
+                  minlength="5"
+                  onkeydown="contaCaracteresUsuario(this)"
+                  onkeyup="contaCaracteresUsuario(this)"
+                  onclick="contaCaracteresUsuario(this)"
+                  style="color: rgba(0, 0, 0, 0.849)"
+                  required
+                />
+                <div>
+                  <strong><p style="color: black;" id="divmag">30 caracteres restantes</p></strong>
+                </div>
+                
+              </div>
+
+              <div class="col-12 col-lg-6">
+                <label for="nome"
+                  ><b>Nome <i class="fa fa-user-plus" aria-hidden="true"></i></b
+                ></label>
+                <input
+                  type="text"
+                  class="form-control is-valid border border-dark rounded"
+                  name="nome"
+                  id="nome"
+                  data-ls-module="charCounter"
+                  maxlength="30"
+                  placeholder="Digite seu nome..."
+                  title="Seu nome é orbigatório para o preenchimento do formulário."
+                  required
+                />
+              </div>
+
+              <div class="col-12 col-lg-6">
+                <label for="sobrenome"
+                  ><b>Sobrenome
+                    <i class="fa fa-user-plus" aria-hidden="true"></i></b
+                ></label>
+                <input
+                  type="text"
+                  class="form-control is-valid border border-dark rounded"
+                  name="sobrenome"
+                  id="sobrenome"
+                  placeholder="Digite seu sobrenome..."
+                  title="Seu sobrenome é obrigatório para o preenchimento do formulário."
+                  required
+                />
+              </div>
+
+              <div class="col-12 col-lg-6 ">
+                <label for="email"
+                  ><b>Email
+                    <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i></b
+                ></label>
+                <input
+                  type="email"
+                  class="form-control is-valid border border-dark rounded"
+                  name="email"
+                  id="email"
+                  maxlength="80"
+                  placeholder="Digite o seu email..."
+                  title="Seu e-mail deve contar um nome antes do '@', e após o '@' deve conter um dominio."
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                  required
+                />
+              </div>
+
+              <div class="col-12 col-lg-6">
+                <label for="email2"
+                  ><b>Confirmação de Email
+                    <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i></b
+                ></label>
+                <input
+                  type="email"
+                  class="form-control border border-dark rounded"
+                  name="email2"
+                  id="email2"
+                  maxlength="80"
+                  placeholder="Confirme o seu e-mail..."
+                  title="Seu e-mail deve contar um nome antes do '@', e após o '@' deve conter um dominio."
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                  required
+                />
+              </div>
+
+              <div class="col-12 col-lg-6 form-group ">
+                <label for="password" class="control-label"
+                  ><b>Senha <i class="fa fa-key fa-fw" aria-hidden="true"></i></b
+                ></label>
+                <input
+                  type="password"
+                  class="form-control is-valid border border-dark rounded"
+                  name="password"
+                  id="password"
+                  placeholder="Digite sua senha..."
+                  data-minlength="8"
+                  maxlength="30"
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!|@|#|$|%|^|&|*|(|)|-|_]).{8,}"
+                  title="Senha deve conter de oito (8) a trinta (30) caracteres pelo menos um número, uma letra maiúscula, 
+                  uma minúscula e não deve conter espaços ou emoji."
+                  onkeydown="contaCaracteresSenha(this)"
+                  onkeyup="contaCaracteresSenha(this)"
+                  onclick="contaCaracteresSenha(this)"
+                  required
+                />
+                <div>
+                  <strong><p style="color: black;" id="divmagsenha">30 caracteres restantes</p></strong>
+                </div>
+                <p style="color: black;">
+                  <strong style="color: black;">Atenção:</strong> Senha deve conter de oito (8) a trinta (30) caracteres pelo menos um número, uma letra maiúscula, 
+                  uma minúscula e não deve conter espaços ou emoji.
+                </p>
+              </div>
+
+              <div class="col-12 col-lg-6 input-group col-md-4 f-left form-group">
+                <label for="password2" class="control-label"
+                  ><b>Confirmação de senha
+                    <i class="fa fa-key fa-fw" aria-hidden="true"></i></b
+                ></label>
+                <input
+                  type="password"
+                  class="form-control border border-dark rounded"
+                  name="password2"
+                  id="password2"
+                  placeholder="Confirme sua senha..."
+                  data-component="password-strength"
+                  data-monitor-id="password-strength-monitor"
+                  data-minlength="8"
+                  maxlength="30"
+                  data-match="#password"
+                  data-match-error="Atenção! As senhas não estão iguais."
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!|@|#|$|%|^|&|*|(|)|-|_]).{8,}"
+                  title="Senha deve conter de oito (8) a trinta (30) caracteres pelo menos um número, uma letra maiúscula, 
+                  uma minúscula e não deve conter espaços ou emoji."
+                  onkeydown="contaCaracteresConfSenha(this)"
+                  onkeyup="contaCaracteresConfSenha(this)"
+                  onclick="contaCaracteresConfSenha(this)"
+                  required
+                />
+                <div>
+                  <strong><p style="color: black;" id="divmagconfsenha">30 caracteres restantes</p></strong>
+                </div>
+                <p style="color: black;">
+                  <strong style="color: black;">Atenção:</strong> Senha deve conter de oito (8) a trinta (30) caracteres pelo menos um número, uma letra maiúscula, 
+                  uma minúscula e não deve conter espaços ou emoji.
+                </p>
+              </div>
+
+              <div class="col-12 col-lg-6 input-group col-md-4 f-left form-group">
+                <div class="checkbox">	    
+                  <label>	      
+                    <input type="checkbox" data-error="Você deve marcar este campo!" 
+                    required> <a href="{% url 'politicaDePrivacidade' %}" class="btn-link"> 
+                      Política de Privacidade e Termos de Uso</a>.<br> Compreendo e aceito os Termos e Condições da <strong>Golden Bear Company</strong>.
+                  </label>
+                  <div class="help-block with-errors"></div>	  
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-12 input-group col-md-4 f-left form-group">
+                <div class="checkbox">	    
+                  <label>	      
+                    <input type="checkbox" data-error="Você deve marcar este campo!" 
+                    required> Marque este item, para validar o formulário de cadastro e criar sua conta.	    
+                  </label>
+                  <div class="help-block with-errors"></div>	  
+                </div>
+              </div>
+
+              <div class="col-12 text-center form-group">
+                <button
+                  class="btn btn-outline-dark border border-dark rounded btn-block"
+                  type="submit">
+                  Criar sua conta<i class="fa fa-upload" aria-hidden="true"></i>
+                </button>
+
+                <button
+                  class="btn btn-outline-dark border border-dark rounded btn-block"
+                  type="button"
+                  onclick="exibirLoginConta()">
+                  Já possui conta? Clique aqui
+                </button>
+              </div>              
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function exibirLoginConta() {
+    location.href = "{% url 'login' %}";
+  }
+
+  function exibirTelaPoliticaDePrivacidade() {
+    location.href = "{% url 'politicaDePrivacidade' %}";
+  }
+
+  function contaCaracteresUsuario(campo_passado) {
+    var limite = 30;
+    var campo = campo_passado.value.length;
+    var maxlength = document.getElementById("username").setAttribute("maxlength", limite);
+    var conta = limite - campo
+    var divmag = document.getElementById("divmag");
+    divmag.innerHTML = conta + " caracteres restantes";
+  }
+
+  function contaCaracteresSenha(campo_passado) {
+    var limite = 30;
+    var campo = campo_passado.value.length;
+    var maxlength = document.getElementById("password").setAttribute("maxlength", limite);
+    var conta = limite - campo
+    var divmagsenha = document.getElementById("divmagsenha");
+    divmagsenha.innerHTML = conta + " caracteres restantes";
+  }
+
+  function contaCaracteresConfSenha(campo_passado) {
+    var limite = 30;
+    var campo = campo_passado.value.length;
+    var maxlength = document.getElementById("password2").setAttribute("maxlength", limite);
+    var conta = limite - campo
+    var divmagconfsenha = document.getElementById("divmagconfsenha");
+    divmagconfsenha.innerHTML = conta + " caracteres restantes";
+  }
+</script>
+{% include 'partials/_footer.html' %} 
+{% endblock %}
